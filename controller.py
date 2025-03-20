@@ -8,7 +8,6 @@ class SpellChecker:
         self._multiDic = md.MultiDictionary()
         self._view = view
 
-
     def check_language(self,e):
         if self._view._ddlanguage.value in ["italian","english","spanish"]:
             self._view._lang_check.value="Selezione avvenuta correttamente!"
@@ -40,8 +39,9 @@ class SpellChecker:
                 t2 = time.time()
                 # scrivo sulla pagina...
                 #self._view.update()
-                self._view.page.add(paroleErrate, t2 - t1)
-                self._view.update()
+                self._view.paroleErrate.value = paroleErrate
+                self._view.time.value = str(t2 - t1)
+                self._view.print_third_row()
 
             case "Linear":
                 t1 = time.time()
@@ -50,8 +50,9 @@ class SpellChecker:
                     if not parola.corretta:
                         paroleErrate = paroleErrate + str(parola) + " "
                 t2 = time.time()
-                self._view.page.add(paroleErrate, t2 - t1)
-                self._view.update()
+                self._view.paroleErrate.value = paroleErrate
+                self._view.time.value = str(t2 - t1)
+                self._view.print_third_row()
 
 
             case "Dichotomic":
@@ -61,8 +62,9 @@ class SpellChecker:
                     if not parola.corretta:
                         paroleErrate = paroleErrate + str(parola) + " - "
                 t2 = time.time()
-                self._view.page.add(paroleErrate, t2 - t1)
-                self._view.update()
+                self._view.paroleErrate.value = paroleErrate
+                self._view.time.value = str(t2 - t1)
+                self._view.print_third_row()
             case _:
                 return None
 

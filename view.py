@@ -16,6 +16,8 @@ class View(object):
         self._txtIn = None
         self._lang_check=None
         self._search_check = None
+        self.paroleErrate = None
+        self.time = None
 
         # define the UI elements and populate the page
 
@@ -45,8 +47,8 @@ class View(object):
         self._ddsearch = ft.Dropdown(alignment=ft.MainAxisAlignment.START,
                                      label="Tipo di ricerca",
                                      options=[ft.dropdown.Option("Default"),
-                                                ft.dropdown.Option("Lineare"),
-                                                ft.dropdown.Option("Dicotomica")],
+                                                ft.dropdown.Option("Linear"),
+                                                ft.dropdown.Option("Dichotomic")],
                                      hint_text="Ricerca",
                                      width=300,
                                      on_change=self.__controller.check_search)
@@ -62,15 +64,18 @@ class View(object):
         self.print_second_row()
 
     def check_everything(self,e):
+
+        self.paroleErrate = ft.Text()
+        self.time = ft.Text()
         val = True
         if self._ddlanguage.value == "" or self._ddlanguage.value == None:
-            self.page.add(ft.Text("Inserisci il testo da correggere"))
+            self.page.add(ft.Text("Inserisci la lingua"))
             self.page.update()
         elif self._ddsearch.value == "" or self._ddsearch.value == None:
             self.page.add(ft.Text("Inserisci il tipo di ricerca"))
             self.page.update()
         elif self._txtIn.value == "" or self._txtIn.value == None:
-            self.page.add(ft.Text("Inserisci la lingua"))
+            self.page.add(ft.Text("Inserisci il testo da correggere"))
             self.page.update()
         else:
             val = False
@@ -90,11 +95,17 @@ class View(object):
         self.page.add(row3)
         self.page.update()
 
+    def print_third_row(self):
+        row4 = ft.Row(controls=[self._txtIn,self.paroleErrate, self.time])
+        self.page.add(row4)
+        self.page.update()
+
     def update(self):
         self.page.update()
 
     def setController(self, controller):
         self.__controller = controller
+
 
     def theme_changed(self, e):
         """Function that changes the color theme of the app, when the corresponding
