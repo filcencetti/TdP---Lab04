@@ -56,12 +56,12 @@ class View(object):
         self._txtIn = ft.TextField(label="Inserisci il testo",
                                    width=500)
 
-
-
         self._btnStart = ft.ElevatedButton(text="Avvia ricerca",
                                            on_click=self.check_everything)
 
         self.print_second_row()
+
+        self.lv = ft.ListView()
 
     def check_everything(self,e):
 
@@ -88,20 +88,28 @@ class View(object):
         self.page.update()
 
     def print_second_row(self):
+        # print del dropdown della ricerca, la casella testo e del bottone
         row2 = ft.Row(controls=[self._ddsearch,self._txtIn,self._btnStart], alignment=ft.MainAxisAlignment.START)
         self.page.add(row2)
 
+        # print dell'esito della selezione della ricerca
         row3 = ft.Row(controls=[self._search_check],alignment=ft.MainAxisAlignment.START)
         self.page.add(row3)
         self.page.update()
 
-    def print_third_row(self):
+    def update_listview(self):
+        # aggiungo alla listview il risultato della ricerca
         words_with_errors = ""
         for word in self.paroleErrate.value:
-            if word != "-" and word != " ":
+            if word != " ":
                 words_with_errors = words_with_errors + word
-        row4 = ft.Row(controls=[ft.Text(f"Hai inserito la frase: {self._txtIn.value}"),ft.Text(f"Le parole errate sono: {words_with_errors}"),ft.Text(f"Tempo impiegato per la ricerca: {self.time.value} s")],alignment=ft.MainAxisAlignment.START)
-        self.page.add(row4)
+        if len(words_with_errors) > 0:
+            self.lv.controls.append(ft.Text(f"Hai inserito la frase: '{self._txtIn.value}'; le parole errate sono: '{words_with_errors}'; il tempo impiegato per la ricerca: {self.time.value} s"))
+        else:
+            self.lv.controls.append(ft.Text(
+                f"Hai inserito la frase: {self._txtIn.value}; non ci sono parole errate; il tempo impiegato per la ricerca: {self.time.value} s"))
+        self.page.add(self.lv)
+        self.paroleErrate.value = ""
         self.page.update()
 
     def update(self):

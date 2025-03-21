@@ -27,7 +27,7 @@ class SpellChecker:
         txtIn = replaceChars(txtIn.lower())
 
         words = txtIn.split()
-        paroleErrate = " - "
+        paroleErrate = ""
 
         match modality:
             case "Default":
@@ -35,13 +35,13 @@ class SpellChecker:
                 parole = self._multiDic.searchWord(words, language)
                 for parola in parole:
                     if not parola.corretta:
-                        paroleErrate = paroleErrate + str(parola) + " - "
+                        paroleErrate = paroleErrate + str(parola) + " "
                 t2 = time.time()
                 # scrivo sulla pagina...
                 #self._view.update()
                 self._view.paroleErrate.value = paroleErrate
                 self._view.time.value = str(t2 - t1)
-                self._view.print_third_row()
+                self._view.update_listview()
 
             case "Linear":
                 t1 = time.time()
@@ -52,7 +52,7 @@ class SpellChecker:
                 t2 = time.time()
                 self._view.paroleErrate.value = paroleErrate
                 self._view.time.value = str(t2 - t1)
-                self._view.print_third_row()
+                self._view.update_listview()
 
 
             case "Dichotomic":
@@ -60,14 +60,17 @@ class SpellChecker:
                 parole = self._multiDic.searchWordDichotomic(words, language)
                 for parola in parole:
                     if not parola.corretta:
-                        paroleErrate = paroleErrate + str(parola) + " - "
+                        paroleErrate = paroleErrate + str(parola) + " "
                 t2 = time.time()
                 self._view.paroleErrate.value = paroleErrate
                 self._view.time.value = str(t2 - t1)
-                self._view.print_third_row()
+                self._view.update_listview()
             case _:
                 return None
 
+        # svuoto il TextField che contiene la frase
+        self._view._txtIn.value = ""
+        self._view.page.update()
 
     def printMenu(self):
         print("______________________________\n" +
