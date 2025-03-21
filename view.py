@@ -96,7 +96,11 @@ class View(object):
         self.page.update()
 
     def print_third_row(self):
-        row4 = ft.Row(controls=[self._txtIn,self.paroleErrate, self.time])
+        words_with_errors = ""
+        for word in self.paroleErrate.value:
+            if word != "-" and word != " ":
+                words_with_errors = words_with_errors + word
+        row4 = ft.Row(controls=[ft.Text(f"Hai inserito la frase: {self._txtIn.value}"),ft.Text(f"Le parole errate sono: {words_with_errors}"),ft.Text(f"Tempo impiegato per la ricerca: {self.time.value} s")],alignment=ft.MainAxisAlignment.START)
         self.page.add(row4)
         self.page.update()
 
